@@ -16,3 +16,5 @@ Thumbs.db
 # Logs e dumps temporários
 *.log
 *.tmp
+
+/workspace_bd
