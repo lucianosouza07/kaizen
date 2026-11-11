@@ -20,7 +20,7 @@ Este módulo encapsula as regras de cálculo, verificação analítica e procedi
 
 ```text
 src/backend/modulo_functions_e_procedures/
-├── 01_functions_procedures.sql   # DDL de criação das 4 functions e 4 procedures
+├── 04_functions_procedures.sql   # DDL de criação das 4 functions e 4 procedures
 ├── test_functions_procedures.sql # Script de testes automatizados e asserções de aceite
 └── README.md                     # Este documento de especificação e guia de execução
 ```
@@ -53,11 +53,11 @@ src/backend/modulo_functions_e_procedures/
 
 ### 4.1 Criação das Rotinas no MySQL 8.0 / MySQL Workbench
 
-Execute o script `01_functions_procedures.sql` conectado à instância com usuário detentor de privilégios `CREATE ROUTINE`:
+Execute o script `04_functions_procedures.sql` conectado à instância com usuário detentor de privilégios `CREATE ROUTINE`:
 
 ```sql
 USE kaizen;
-SOURCE src/backend/modulo_functions_e_procedures/01_functions_procedures.sql;
+SOURCE src/backend/modulo_functions_e_procedures/04_functions_procedures.sql;
 ```
 
 *Nota para execução manual no Workbench*: O script inclui controle explícito de delimitadores (`DELIMITER $$ ... DELIMITER ;`). Certifique-se de executar o arquivo completo como script (*Execute the entire script*, `Ctrl+Shift+Enter`).

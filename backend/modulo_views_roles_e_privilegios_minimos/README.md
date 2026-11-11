@@ -20,7 +20,7 @@ Este módulo implementa a camada de segurança lógica, controle de acesso basea
 
 ```text
 src/backend/modulo_views_roles_e_privilegios_minimos/
-├── 01_views_roles.sql      # DDL de criação das 5 visões, 6 roles e declarações GRANT
+├── 06_views_roles.sql      # DDL de criação das 5 visões, 6 roles e declarações GRANT
 ├── test_views_roles.sql    # Script de validação automatizada de permissões e asserções
 └── README.md               # Este documento de especificação e guia de execução
 ```
@@ -64,11 +64,11 @@ src/backend/modulo_views_roles_e_privilegios_minimos/
 
 ### 6.1 Criação das Visões e Roles no MySQL 8.0 / MySQL Workbench
 
-Execute o script `01_views_roles.sql` conectado à instância com usuário administrativo (`root` ou `DBA`):
+Execute o script `06_views_roles.sql` conectado à instância com usuário administrativo (`root` ou `DBA`):
 
 ```sql
 USE kaizen;
-SOURCE src/backend/modulo_views_roles_e_privilegios_minimos/01_views_roles.sql;
+SOURCE src/backend/modulo_views_roles_e_privilegios_minimos/06_views_roles.sql;
 ```
 
 *Nota para execução no Workbench*: Execute o arquivo completo (*Execute the entire script*, `Ctrl+Shift+Enter`).

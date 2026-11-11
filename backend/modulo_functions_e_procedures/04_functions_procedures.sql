@@ -1,5 +1,5 @@
 -- =============================================================================
--- 01_functions_procedures.sql
+-- 04_functions_procedures.sql
 -- Kaizen BD — Functions e Procedures (inclui contadores)
 -- Tarefa: BK-DB-06 (Etapa 4: Objetos e Segurança)
 -- SGBD: MySQL Server 8.0.46 / Dialeto MySQL 8.0

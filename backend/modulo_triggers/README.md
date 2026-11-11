@@ -20,7 +20,7 @@ Este módulo implementa os gatilhos declarativos de banco de dados responsáveis
 
 ```text
 src/backend/modulo_triggers/
-├── 01_triggers.sql         # DDL de criação dos 7 objetos de triggers
+├── 05_triggers.sql         # DDL de criação dos 7 objetos de triggers
 ├── test_triggers.sql       # Script de testes automatizados e asserções de aceite
 └── README.md               # Este documento de especificação e guia de execução
 ```
@@ -45,11 +45,11 @@ src/backend/modulo_triggers/
 
 ### 4.1 Criação dos Triggers no MySQL 8.0 / MySQL Workbench
 
-Execute o script `01_triggers.sql` conectado à instância com usuário detentor de privilégios de administração (`SUPER` / `TRIGGER`):
+Execute o script `05_triggers.sql` conectado à instância com usuário detentor de privilégios de administração (`SUPER` / `TRIGGER`):
 
 ```sql
 USE kaizen;
-SOURCE src/backend/modulo_triggers/01_triggers.sql;
+SOURCE src/backend/modulo_triggers/05_triggers.sql;
 ```
 
 *Nota para execução manual no Workbench*: O script inclui controle explícito de delimitadores (`DELIMITER $$ ... DELIMITER ;`). Execute o arquivo completo como script (*Execute the entire script*, `Ctrl+Shift+Enter`).

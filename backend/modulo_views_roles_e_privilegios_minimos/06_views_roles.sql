@@ -1,5 +1,5 @@
 -- =============================================================================
--- 01_views_roles.sql
+-- 06_views_roles.sql
 -- Kaizen BD — Módulo de Views, Roles e Privilégios Mínimos (BK-DB-08)
 -- SGBD: MySQL Server 8.0.46 / Dialeto MySQL 8.0 (InnoDB, utf8mb4_0900_ai_ci)
 -- =============================================================================
