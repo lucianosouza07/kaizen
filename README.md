@@ -38,7 +38,7 @@ O **Kaizen** centraliza a gestão multiunidade da rede de academias e clubes, pr
 
 ---
 
-## Arquitetura do Repositório
+## Árvore do Repositório
 
 ```text
 kaizen/
