@@ -1,72 +1,84 @@
-# Kaizen ERP — Banco de Dados Relacional (MySQL 8.0)
+<p align="center">
+  <img src="LOGO.png" alt="Kaizen Logo" width="180">
+</p>
 
-Camada de banco de dados relacional para a rede de academias e clubes **Kaizen ERP**. O projeto abrange desde os modelos conceituais e lógicos (3FN) até scripts físicos DDL, rotinas armazenadas (functions e procedures), triggers de auditoria/integridade, visões e segurança RBAC com privilégios mínimos.
+# Kaizen
+
+> **Estágio Atual do Projeto:** A camada de banco de dados relacional encontra-se totalmente modelada, normalizada (3FN) e operacional no MySQL 8.0. Com as 15 tabelas (13 de domínio e 2 técnicas), rotinas de negócio (procedures e functions), triggers de auditoria/integridade e controle RBAC implementados e cobertos por suítes de testes, o projeto está pronto em ambiente conteinerizado (Docker Compose + phpMyAdmin) para a integração com as próximas fases de aplicação e interfaces.
+
+[![MySQL](https://img.shields.io/badge/MySQL-8.0.46-00758F?logo=mysql&logoColor=white)](#ambiente-e-stack)
+[![InnoDB](https://img.shields.io/badge/Engine-InnoDB-orange)](#ambiente-e-stack)
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](#execução-via-docker-recomendado)
+[![Status](https://img.shields.io/badge/Status-Database%20Ready-brightgreen)](#suíte-de-testes)
 
 ---
 
-## 1. Ambiente e Tecnologias
-- **SGBD:** MySQL Server 8.0.46 / MySQL Workbench 8.0.47 CE
-- **Engine de Armazenamento:** `InnoDB`
-- **Charset & Collation:** `utf8mb4` / `utf8mb4_0900_ai_ci`
-- **Configuração de Tabelas:** `lower_case_table_names = 1`
-- **Ambiente Containerizado:** Docker Compose com serviços `database` (MySQL 8.0) e `phpmyadmin` (interface web)
+## Visão Geral
+
+O **Kaizen** centraliza a gestão multiunidade da rede de academias e clubes, provendo isolamento lógico de filiais, controle contratual estrito (regra de 1 contrato ativo por aluno), idempotência financeira de mensalidades e trilha de auditoria completa para operações críticas.
+
+### Recursos Entregues
+- **Conformidade Relacional Rigorosa:** Modelagem normalizada em Terceira Forma Normal (3FN).
+- **Isolamento Multiunidade:** Suporte nativo a filiais com integridade referencial.
+- **Automação no Banco de Dados:** Triggers para auditoria DML e manutenção de status; procedures atômicas para fluxos operacionais.
+- **Segurança RBAC:** Matriz de privilégios mínimos segmentada por papéis operacionais.
+- **Pronto para Desenvolvimento:** Ambiente containerizado via Docker com interface phpMyAdmin inclusa.
 
 ---
 
-## 2. Estrutura do Repositório
+## Ambiente e Stack
+
+| Componente | Especificação |
+|---|---|
+| **SGBD** | MySQL Server 8.0.46 / MySQL Workbench 8.0.47 CE |
+| **Engine** | `InnoDB` |
+| **Charset / Collation** | `utf8mb4` / `utf8mb4_0900_ai_ci` |
+| **Configuração de Tabelas** | `lower_case_table_names = 1` |
+| **Containers** | Docker Compose (`database` MySQL 8.0 + `phpmyadmin`) |
+
+---
+
+## Arquitetura do Repositório
 
 ```text
-kaizen/
-├── docker-compose.yaml                               # Subida dos containers MySQL 8.0 e phpMyAdmin
+src/
+├── docker-compose.yaml                               # Serviços MySQL 8.0 e phpMyAdmin
+├── LOGO.png                                          # Identidade visual do projeto
 ├── README.md                                         # Documentação central do banco de dados
 └── backend/
-    ├── modelo_conceitual/                            # Etapa 1: Modelo Conceitual ER/EER
-    │   ├── catalogo_entidades_relacionamentos.md     # 13 entidades e 13 relacionamentos R1-R13
-    │   ├── diagrama_er_conceitual.mmd                # Diagrama conceitual em sintaxe Mermaid
-    │   ├── modelo_conceitual.pdf                     # Versão consolidada em PDF
-    │   └── validacao_modelo_conceitual.sql           # Teste automatizado de validação conceitual
+    ├── modelo_conceitual/                            # Modelo Conceitual ER/EER
+    │   ├── catalogo_entidades_relacionamentos.md     # 13 entidades e relacionamentos R1-R13
+    │   ├── diagrama_er_conceitual.mmd                # Diagrama conceitual (Mermaid)
+    │   ├── modelo_conceitual.pdf                     # Documento consolidado
+    │   └── validacao_modelo_conceitual.sql           # Asserções conceituais
     │
-    ├── modelo_logico/                                # Etapa 2: Modelo Lógico e 3FN
+    ├── modelo_logico/                                # Modelo Lógico e Regras Relacionais
     │   ├── dicionario_dados.md                       # Dicionário semântico e tipos lógicos
-    │   ├── justificativa_3fn.md                      # Demonstração matemática de 1FN, 2FN e 3FN
-    │   ├── matriz_integridade.md                     # Matriz de PKs, FKs, UKs e CKs
-    │   ├── modelo_logico.pdf                         # Versão consolidada em PDF
-    │   └── regras_multiunidade.md                    # Regras de isolamento multiunidade
+    │   ├── justificativa_3fn.md                      # Demonstração formal de 1FN, 2FN e 3FN
+    │   ├── matriz_integridade.md                     # Mapeamento de PKs, FKs, UKs e CKs
+    │   ├── modelo_logico.pdf                         # Documento consolidado
+    │   └── regras_multiunidade.md                    # Diretrizes de isolamento por unidade
     │
-    └── modelo_fisico/                                # Etapa 3+: Módulos de Execução do Banco de Dados
-        ├── modulo_ddl_do_nucleo_de_cadastro/         # DDL de Cadastro Base
-        │   ├── 01_ddl_nucleo_cadastro.sql            # UNIDADE, PAPEL, USUARIO, ALUNO, COLABORADOR, etc.
-        │   └── test_ddl_nucleo_cadastro.sql          # Asserções de integridade do cadastro
-        ├── modulo_ddl_comercial_e_financeiro/        # DDL Comercial e Financeiro
-        │   ├── 02_ddl_comercial_financeiro.sql       # PLANO, CONTRATO, MENSALIDADE, PAGAMENTO
-        │   └── test_ddl_comercial_financeiro.sql     # Testes de constraints financeiras e unicidade
-        ├── modulo_ddl_de_operacao_tabela_tecnica_e_seed/ # Operação e Carga Inicial
-        │   └── 03_ddl_operacao_seed.sql              # TURMA, ACESSO, RESERVA_TURMA, AUDITORIA_LOG, Seeds
-        ├── modulo_functions_e_procedures/            # Rotinas Armazenadas
-        │   ├── 04_functions_procedures.sql           # 4 Functions + 4 Stored Procedures
-        │   └── test_functions_procedures.sql         # Testes unitários das rotinas
-        ├── modulo_triggers/                          # Triggers e Automação de Negócio
-        │   ├── 05_triggers.sql                       # 7 triggers de integridade, auditoria e status
-        │   └── test_triggers.sql                     # Testes automatizados de disparos de triggers
-        └── modulo_views_roles_e_privilegios_minimos/ # Visões e Segurança RBAC
-            ├── 06_views_roles.sql                    # 5 visões analíticas/operacionais e 6 roles RBAC
-            └── test_views_roles.sql                  # Testes de privilégios e consultas das views
+    └── modelo_fisico/                                # Scripts SQL Executáveis
+        ├── modulo_ddl_do_nucleo_de_cadastro/         # DDL: UNIDADE, USUARIO, ALUNO, COLABORADOR...
+        ├── modulo_ddl_comercial_e_financeiro/        # DDL: PLANO, CONTRATO, MENSALIDADE, PAGAMENTO...
+        ├── modulo_ddl_de_operacao_tabela_tecnica_e_seed/ # DDL: TURMA, ACESSO, AUDITORIA_LOG + Carga Inicial
+        ├── modulo_functions_e_procedures/            # 4 Stored Procedures + 4 Functions
+        ├── modulo_triggers/                          # 7 Triggers de negócio e auditoria
+        └── modulo_views_roles_e_privilegios_minimos/ # 5 Views analíticas e 6 Roles RBAC
 ```
 
 ---
 
-## 3. Como Executar o Projeto
+## Início Rápido
 
-Você pode subir e executar o banco de dados de duas formas: **via Docker** (linha de comando ou navegador) ou **via MySQL Workbench**.
+### Execução via Docker (Recomendado)
 
-### Forma 1: Execução via Docker (Recomendado)
+> [!TIP]
+> A execução via Docker já inicializa o banco de dados configurado com timezone UTC, collation correta e a ferramenta web phpMyAdmin.
 
-O Docker Compose sobe automaticamente a instância do MySQL 8.0 e a interface web do phpMyAdmin.
-
-1. **Clonar o repositório e subir os containers:**
+1. **Subir os containers:**
    ```bash
-   git clone https://github.com/lucianosouza07/kaizen.git
-   cd kaizen
    docker compose up -d
    ```
 
@@ -80,59 +92,49 @@ O Docker Compose sobe automaticamente a instância do MySQL 8.0 e a interface we
    docker exec -i kaizen-mysql-test mysql -u root -proot kaizen < backend/modelo_fisico/modulo_views_roles_e_privilegios_minimos/06_views_roles.sql
    ```
 
-3. **Acesso visual via Navegador (phpMyAdmin):**
-   - Acesse no navegador: **`http://localhost:8080`**
-   - **Servidor:** `database`
-   - **Usuário:** `root`
-   - **Senha:** `root`
+3. **Acesso visual via phpMyAdmin:**
+   - URL: [http://localhost:8080](http://localhost:8080)
+   - Servidor: `database`
+   - Usuário / Senha: `root` / `root`
 
-4. **Encerrar os serviços:**
+4. **Parar os containers:**
    ```bash
-   docker compose down       # Encerra os containers mantendo os dados
-   docker compose down -v    # Encerra e limpa todos os volumes para reiniciar do zero
+   docker compose down       # Mantém o volume de dados
+   docker compose down -v    # Limpa dados para reinicialização limpa
    ```
 
 ---
 
-### Forma 2: Execução via MySQL Workbench (ou Instância Local)
+### Execução via MySQL Workbench / Instância Local
 
-Se preferir utilizar o **MySQL Workbench 8.0.47 CE** conectado ao MySQL local ou ao container Docker:
+> [!IMPORTANT]
+> Caso utilize uma instância local fora do Docker, certifique-se de que a variável de sistema `lower_case_table_names` esteja definida como `1`.
 
-1. **Conectar à Instância:**
-   - Crie uma conexão (*MySQL Connection*) no Workbench com:
-     - **Hostname:** `127.0.0.1` (ou `localhost`)
-     - **Port:** `3306`
-     - **Username:** `root`
-     - **Password:** `root` (ou a senha configurada no seu MySQL local)
-
-2. **Garantir a existência do banco de dados:**
-   - Execute no editor SQL:
-     ```sql
-     CREATE SCHEMA IF NOT EXISTS kaizen 
-       DEFAULT CHARACTER SET utf8mb4 
-       DEFAULT COLLATE utf8mb4_0900_ai_ci;
-     USE kaizen;
-     ```
-
-3. **Executar os scripts em ordem:**
-   No menu **File** > **Open SQL Script...** (ou `Ctrl + Shift + O`), abra e execute clicando no ícone do **Raio (Execute)** na seguinte ordem estrita:
-   - `backend/modelo_fisico/modulo_ddl_do_nucleo_de_cadastro/01_ddl_nucleo_cadastro.sql`
-   - `backend/modelo_fisico/modulo_ddl_comercial_e_financeiro/02_ddl_comercial_financeiro.sql`
-   - `backend/modelo_fisico/modulo_ddl_de_operacao_tabela_tecnica_e_seed/03_ddl_operacao_seed.sql`
-   - `backend/modelo_fisico/modulo_functions_e_procedures/04_functions_procedures.sql`
-   - `backend/modelo_fisico/modulo_triggers/05_triggers.sql`
-   - `backend/modelo_fisico/modulo_views_roles_e_privilegios_minimos/06_views_roles.sql`
-
-4. **Atualizar o catálogo (Schemas):**
-   - No painel lateral esquerdo (*Navigator*), clique com o botão direito no schema `kaizen` e selecione **Refresh All**. Todas as 15 tabelas, rotinas, triggers e visões estarão disponíveis.
+1. **Conectar à instância:** Host `127.0.0.1`, Porta `3306`, Usuário `root`.
+2. **Criar o schema Kaizen:**
+   ```sql
+   CREATE SCHEMA IF NOT EXISTS kaizen 
+     DEFAULT CHARACTER SET utf8mb4 
+     DEFAULT COLLATE utf8mb4_0900_ai_ci;
+   USE kaizen;
+   ```
+3. **Executar os scripts na ordem obrigatória:**
+   - `01_ddl_nucleo_cadastro.sql`
+   - `02_ddl_comercial_financeiro.sql`
+   - `03_ddl_operacao_seed.sql`
+   - `04_functions_procedures.sql`
+   - `05_triggers.sql`
+   - `06_views_roles.sql`
+4. Atualize o painel *Navigator* (*Refresh All*) para inspecionar tabelas, rotinas e visões criadas.
 
 ---
 
-## 4. Execução da Suíte de Testes
+## Suíte de Testes
 
-Cada módulo possui seu respectivo script de testes e asserções automatizadas (`test_*.sql`).
+Cada módulo contém testes unitários e asserções automatizadas (`test_*.sql`).
 
-**Via Docker CLI:**
+### Opção 1: Via Linha de Comando (Docker)
+
 ```bash
 docker exec -i kaizen-mysql-test mysql -u root -proot kaizen < backend/modelo_conceitual/validacao_modelo_conceitual.sql
 docker exec -i kaizen-mysql-test mysql -u root -proot kaizen < backend/modelo_fisico/modulo_ddl_do_nucleo_de_cadastro/test_ddl_nucleo_cadastro.sql
@@ -142,26 +144,56 @@ docker exec -i kaizen-mysql-test mysql -u root -proot kaizen < backend/modelo_fi
 docker exec -i kaizen-mysql-test mysql -u root -proot kaizen < backend/modelo_fisico/modulo_views_roles_e_privilegios_minimos/test_views_roles.sql
 ```
 
-*(No MySQL Workbench, basta abrir qualquer arquivo `test_*.sql` e clicar em Execute).*
+### Opção 2: Via MySQL Workbench
+
+Para executar e inspecionar os testes interativamente na interface gráfica:
+
+1. Conecte-se à sua instância e garanta que o schema ativo seja o `kaizen` (`USE kaizen;`).
+2. Abra o arquivo de teste correspondente ao módulo desejado via menu **File** > **Open SQL Script...** (ou `Ctrl + Shift + O`):
+   - `backend/modelo_conceitual/validacao_modelo_conceitual.sql`
+   - `backend/modelo_fisico/modulo_ddl_do_nucleo_de_cadastro/test_ddl_nucleo_cadastro.sql`
+   - `backend/modelo_fisico/modulo_ddl_comercial_e_financeiro/test_ddl_comercial_financeiro.sql`
+   - `backend/modelo_fisico/modulo_functions_e_procedures/test_functions_procedures.sql`
+   - `backend/modelo_fisico/modulo_triggers/test_triggers.sql`
+   - `backend/modelo_fisico/modulo_views_roles_e_privilegios_minimos/test_views_roles.sql`
+3. Execute o script clicando no ícone do **Raio** (*Execute the selected portion of the script or everything*).
+4. Acompanhe os resultados no painel **Action Output** na parte inferior:
+   - Consultas de asserção retornam mensagens de validação com status `OK` / `PASSOU`.
+   - Testes de integridade (como violação intencional de constraints ou triggers) reportam os erros esperados capturados pelo script.
 
 ---
 
-## 5. Mapeamento das 15 Tabelas do Modelo
+## Catálogo de Tabelas
+
+O modelo físico é composto por 15 tabelas (13 de domínio e 2 técnicas):
 
 | Categoria | Tabela | Finalidade Principal |
 |---|---|---|
-| **Núcleo de Cadastro** | `UNIDADE` | Cadastro das filiais da rede de academias |
-| | `PAPEL` | Perfis de acesso no sistema |
-| | `USUARIO` | Credenciais de acesso ao sistema |
-| | `USUARIO_PAPEL` | Associação N:N entre usuários e papéis |
-| | `ALUNO` | Cadastro dos alunos da rede com isolamento multiunidade |
-| | `COLABORADOR` | Funcionários e instrutores vinculados a uma unidade |
-| **Comercial / Financeiro** | `PLANO` | Catálogo de planos e preços |
-| | `CONTRATO` | Contrato do aluno (regra estrita de 1 ativo por aluno) |
-| | `MENSALIDADE` | Parcelas com competência mensal idempotente (`AAAA-MM`) |
-| | `PAGAMENTO` | Registro financeiro e suporte a estornos compensatórios |
-| **Operação** | `TURMA` | Horários de aulas e atividades com capacidade máxima |
+| **Núcleo de Cadastro** | `UNIDADE` | Cadastro das filiais e academias da rede |
+| | `PAPEL` | Perfis e níveis de acesso ao sistema |
+| | `USUARIO` | Credenciais e status de autenticação |
+| | `USUARIO_PAPEL` | Relação N:N entre usuários e papéis |
+| | `ALUNO` | Cadastro dos membros e isolamento por unidade |
+| | `COLABORADOR` | Instrutores e colaboradores operacionais |
+| **Comercial / Financeiro** | `PLANO` | Catálogo de produtos, planos e precificação |
+| | `CONTRATO` | Vínculo contratual do aluno (regra: 1 ativo por aluno) |
+| | `MENSALIDADE` | Parcelas e competências financeiras mensais (`AAAA-MM`) |
+| | `PAGAMENTO` | Liquidação financeira e registro de estornos |
+| **Operação** | `TURMA` | Horários de aulas, atividades e capacidade máxima |
 | | `ACESSO` | Registros de catraca / portaria |
-| | `RESERVA_TURMA` | Associação N:N entre alunos e turmas |
-| **Técnicas** | `CONTADOR_DOCUMENTO` | Controle atômico de sequenciais de documentos/matrículas |
-| | `AUDITORIA_LOG` | Trilha de auditoria das operações DML sensíveis |
+| | `RESERVA_TURMA` | Inscrições e reservas de alunos por turma |
+| **Técnicas** | `CONTADOR_DOCUMENTO` | Geração atômica de identificadores e matrículas |
+| | `AUDITORIA_LOG` | Trilha de auditoria para operações DML sensíveis |
+
+---
+
+## Colaboradores
+
+| Colaborador | GitHub |
+|---|---|
+| Gabriele Natividade | [@Gabriele-Natividade](https://github.com/Gabriele-Natividade) |
+| Larinete Santana | [@larinete](https://github.com/larinete) |
+| Leticia Veras | [@letifarias17](https://github.com/letifarias17) |
+| Leticia Vitorino | [@leticiavitorinoam](https://github.com/leticiavitorinoam) |
+| Luciano Souza | [@lucianosouza07](https://github.com/lucianosouza07) |
+
