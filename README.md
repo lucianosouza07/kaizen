@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="LOGO.png" alt="Kaizen Logo" width="280">
+  <img src="LOGO.png" alt="Kaizen Logo" width="380">
 </p>
 
-<h1 align="center" style="font-size: 2.6rem;">Kaizen</h1>
+<h1 align="center" style="font-size: 5.6rem;">Kaizen</h1>
 
 > **Estágio Atual do Projeto:** A camada de banco de dados relacional encontra-se totalmente modelada, normalizada (3FN) e operacional no MySQL 8.0. Com as 15 tabelas (13 de domínio e 2 técnicas), rotinas de negócio (procedures e functions), triggers de auditoria/integridade e controle RBAC implementados e cobertos por suítes de testes, o projeto está pronto em ambiente conteinerizado (Docker Compose + phpMyAdmin) para a integração com as próximas fases de aplicação e interfaces.
 
