@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="LOGO.png" alt="Kaizen Logo" width="180">
+  <img src="LOGO.png" alt="Kaizen Logo" width="380">
 </p>
 
-# Kaizen
+<h1 align="center" style="font-size: 5.6rem;">Kaizen</h1>
 
 > **Estágio Atual do Projeto:** A camada de banco de dados relacional encontra-se totalmente modelada, normalizada (3FN) e operacional no MySQL 8.0. Com as 15 tabelas (13 de domínio e 2 técnicas), rotinas de negócio (procedures e functions), triggers de auditoria/integridade e controle RBAC implementados e cobertos por suítes de testes, o projeto está pronto em ambiente conteinerizado (Docker Compose + phpMyAdmin) para a integração com as próximas fases de aplicação e interfaces.
 
@@ -41,7 +41,7 @@ O **Kaizen** centraliza a gestão multiunidade da rede de academias e clubes, pr
 ## Arquitetura do Repositório
 
 ```text
-src/
+kaizen/
 ├── docker-compose.yaml                               # Serviços MySQL 8.0 e phpMyAdmin
 ├── LOGO.png                                          # Identidade visual do projeto
 ├── README.md                                         # Documentação central do banco de dados
@@ -191,9 +191,8 @@ O modelo físico é composto por 15 tabelas (13 de domínio e 2 técnicas):
 
 | Colaborador | GitHub |
 |---|---|
-| Gabriele Natividade | [@Gabriele-Natividade](https://github.com/Gabriele-Natividade) |
-| Larinete Santana | [@larinete](https://github.com/larinete) |
-| Leticia Veras | [@letifarias17](https://github.com/letifarias17) |
-| Leticia Vitorino | [@leticiavitorinoam](https://github.com/leticiavitorinoam) |
-| Luciano Souza | [@lucianosouza07](https://github.com/lucianosouza07) |
-
+| Gabriele Santos Natividade | [@Gabriele-Natividade](https://github.com/Gabriele-Natividade) |
+| Larinete Santana Xavier | [@larinete](https://github.com/larinete) |
+| Leticia Farias Veras | [@letifarias17](https://github.com/letifarias17) |
+| Leticia Vitorino de Araújo Motta | [@leticiavitorinoam](https://github.com/leticiavitorinoam) |
+| Luciano de Souza Silva | [@lucianosouza07](https://github.com/lucianosouza07) |
