@@ -1,0 +1,121 @@
+erDiagram
+    UNIDADE ||--o{ ALUNO          : "R1 possui (1:0..N)"
+    UNIDADE ||--o{ COLABORADOR    : "R2 lota (1:0..N)"
+    UNIDADE ||--o{ CONTRATO       : "R3 registra (1:0..N)"
+    PLANO   ||--o{ CONTRATO       : "R4 define preco (1:0..N)"
+    ALUNO   ||--o{ CONTRATO       : "R5 assina (1:0..N)"
+    CONTRATO   ||--o{ MENSALIDADE : "R6 gera (1:0..N)"
+    MENSALIDADE||--o{ PAGAMENTO   : "R7 recebe (1:0..N)"
+    ALUNO   ||--o{ ACESSO         : "R8 solicita (1:0..N)"
+    UNIDADE ||--o{ ACESSO         : "registra unidade"
+    COLABORADOR ||--o{ TURMA      : "R9 ministra (1:0..N)"
+    UNIDADE ||--o{ TURMA          : "R10 oferece (1:0..N)"
+    ALUNO   ||--o{ RESERVA_TURMA  : "R11a faz (N:N via RESERVA_TURMA)"
+    TURMA   ||--o{ RESERVA_TURMA  : "R11b contem (N:N via RESERVA_TURMA)"
+    USUARIO ||--o{ USUARIO_PAPEL  : "R12a recebe (N:N via USUARIO_PAPEL)"
+    PAPEL   ||--o{ USUARIO_PAPEL  : "R12b atribuido (N:N via USUARIO_PAPEL)"
+    UNIDADE |o--o{ USUARIO        : "R13 define escopo (0..1:0..N)"
+
+    UNIDADE {
+        id_unidade identificador
+        nome atributo_negocio
+        cnpj atributo_negocio
+        cidade atributo_negocio
+        ativa atributo_negocio
+    }
+
+    ALUNO {
+        id_aluno identificador
+        nome atributo_negocio
+        cpf atributo_negocio
+        email atributo_negocio
+        data_nascimento atributo_negocio
+        consentimento_lgpd_em atributo_negocio
+        ativo atributo_negocio
+    }
+
+    COLABORADOR {
+        id_colaborador identificador
+        nome atributo_negocio
+        cpf atributo_negocio
+        cargo atributo_negocio
+        ativo atributo_negocio
+    }
+
+    PLANO {
+        id_plano identificador
+        nome atributo_negocio
+        periodicidade_meses atributo_negocio
+        valor_mensal atributo_negocio
+        carencia_dias atributo_negocio
+        multa_percentual atributo_negocio
+    }
+
+    CONTRATO {
+        id_contrato identificador
+        numero atributo_negocio
+        data_inicio atributo_negocio
+        data_fim atributo_negocio
+        dia_vencimento atributo_negocio
+        valor_mensal atributo_negocio
+        status atributo_negocio
+    }
+
+    MENSALIDADE {
+        id_mensalidade identificador
+        competencia atributo_negocio
+        vencimento atributo_negocio
+        valor atributo_negocio
+        juros atributo_negocio
+        multa atributo_negocio
+        desconto atributo_negocio
+        status atributo_negocio
+    }
+
+    PAGAMENTO {
+        id_pagamento identificador
+        tipo atributo_negocio
+        valor atributo_negocio
+        forma atributo_negocio
+        id_externo atributo_negocio
+        pago_em atributo_negocio
+    }
+
+    ACESSO {
+        id_acesso identificador
+        data_hora atributo_negocio
+        liberado atributo_negocio
+        motivo atributo_negocio
+    }
+
+    TURMA {
+        id_turma identificador
+        modalidade atributo_negocio
+        sala atributo_negocio
+        capacidade atributo_negocio
+        inicio atributo_negocio
+        fim atributo_negocio
+    }
+
+    RESERVA_TURMA {
+        id_reserva identificador_associativo
+        status atributo_negocio
+        reservada_em atributo_negocio
+    }
+
+    USUARIO {
+        id_usuario identificador
+        login atributo_negocio
+        nome atributo_negocio
+        ativo atributo_negocio
+    }
+
+    PAPEL {
+        id_papel identificador
+        nome atributo_negocio
+    }
+
+    USUARIO_PAPEL {
+        id_usuario identificador_composto
+        id_papel identificador_composto
+    }
