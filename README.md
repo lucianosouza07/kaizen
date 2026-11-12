@@ -41,7 +41,7 @@ O **Kaizen** centraliza a gestão multiunidade da rede de academias e clubes, pr
 ## Arquitetura do Repositório
 
 ```text
-src/
+kaizen/
 ├── docker-compose.yaml                               # Serviços MySQL 8.0 e phpMyAdmin
 ├── LOGO.png                                          # Identidade visual do projeto
 ├── README.md                                         # Documentação central do banco de dados
@@ -191,9 +191,8 @@ O modelo físico é composto por 15 tabelas (13 de domínio e 2 técnicas):
 
 | Colaborador | GitHub |
 |---|---|
-| Gabriele Natividade | [@Gabriele-Natividade](https://github.com/Gabriele-Natividade) |
-| Larinete Santana | [@larinete](https://github.com/larinete) |
-| Leticia Veras | [@letifarias17](https://github.com/letifarias17) |
-| Leticia Vitorino | [@leticiavitorinoam](https://github.com/leticiavitorinoam) |
-| Luciano Souza | [@lucianosouza07](https://github.com/lucianosouza07) |
-
+| Gabriele Santos Natividade | [@Gabriele-Natividade](https://github.com/Gabriele-Natividade) |
+| Larinete Santana Xavier | [@larinete](https://github.com/larinete) |
+| Leticia Farias Veras | [@letifarias17](https://github.com/letifarias17) |
+| Leticia Vitorino de Araújo Motta | [@leticiavitorinoam](https://github.com/leticiavitorinoam) |
+| Luciano de Souza Silva | [@lucianosouza07](https://github.com/lucianosouza07) |
