@@ -63,9 +63,10 @@ Você pode subir e executar o banco de dados de duas formas: **via Docker** (lin
 
 O Docker Compose sobe automaticamente a instância do MySQL 8.0 e a interface web do phpMyAdmin.
 
-1. **Subir os containers:**
+1. **Clonar o repositório e subir os containers:**
    ```bash
-   cd src
+   git clone https://github.com/lucianosouza07/kaizen.git
+   cd kaizen
    docker compose up -d
    ```
 
