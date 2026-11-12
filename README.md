@@ -59,13 +59,19 @@ kaizen/
     │   ├── modelo_logico.pdf                         # Documento consolidado
     │   └── regras_multiunidade.md                    # Diretrizes de isolamento por unidade
     │
-    └── modelo_fisico/                                # Scripts SQL Executáveis
-        ├── modulo_ddl_do_nucleo_de_cadastro/         # DDL: UNIDADE, USUARIO, ALUNO, COLABORADOR...
-        ├── modulo_ddl_comercial_e_financeiro/        # DDL: PLANO, CONTRATO, MENSALIDADE, PAGAMENTO...
-        ├── modulo_ddl_de_operacao_tabela_tecnica_e_seed/ # DDL: TURMA, ACESSO, AUDITORIA_LOG + Carga Inicial
-        ├── modulo_functions_e_procedures/            # 4 Stored Procedures + 4 Functions
-        ├── modulo_triggers/                          # 7 Triggers de negócio e auditoria
-        └── modulo_views_roles_e_privilegios_minimos/ # 5 Views analíticas e 6 Roles RBAC
+    ├── modelo_fisico/                                # Scripts SQL Executáveis
+    │   ├── modulo_ddl_do_nucleo_de_cadastro/         # DDL: UNIDADE, USUARIO, ALUNO, COLABORADOR...
+    │   ├── modulo_ddl_comercial_e_financeiro/        # DDL: PLANO, CONTRATO, MENSALIDADE, PAGAMENTO...
+    │   ├── modulo_ddl_de_operacao_tabela_tecnica_e_seed/ # DDL: TURMA, ACESSO, AUDITORIA_LOG + Carga Inicial
+    │   ├── modulo_functions_e_procedures/            # 4 Stored Procedures + 4 Functions
+    │   ├── modulo_triggers/                          # 7 Triggers de negócio e auditoria
+    │   └── modulo_views_roles_e_privilegios_minimos/ # 5 Views analíticas e 6 Roles RBAC
+    │
+    └── modulo_testes_sql_backup_e_restauracao/       # Validação Integrada e Resiliência (BK-DB-09)
+        ├── 01_testes_integrados_violacoes_replay.sql # Bateria de estresse, violações e idempotência
+        ├── 02_validacao_restauracao.sql              # Auditoria de paridade no catálogo (information_schema)
+        ├── executar_backup_e_restauracao.sh          # Automação de dump e restore a frio (Linux/macOS)
+        └── executar_backup_e_restauracao.ps1         # Automação de dump e restore a frio (Windows/PowerShell)
 ```
 
 ---
@@ -186,3 +192,57 @@ O modelo físico é composto por 15 tabelas (13 de domínio e 2 técnicas):
 | | `AUDITORIA_LOG` | Trilha de auditoria para operações DML sensíveis |
 
 ---
+
+## Testes Integrados, Backup e Restauração
+
+Para comprovar a resiliência e a recuperabilidade da base de dados relacional, o projeto conta com rotinas de testes integrados ponta a ponta e automação de Disaster Recovery (BK-DB-09), que podem ser executadas tanto via terminal (Docker / scripts) quanto interativamente via interface gráfica (MySQL Workbench).
+
+### Opção 1: Via Linha de Comando (Docker e Scripts Automatizados)
+
+1. **Bateria Integrada de Violações e Idempotência (Replay):**
+   Executa testes cobrindo dados de seed, tentativas intencionais de violação (lotação de turmas, múltiplos contratos ativos, quebra de isolamento multiunidade) e proteção contra replays de webhook/faturamento:
+   ```bash
+   docker exec -i kaizen-mysql-test mysql -u root -proot kaizen < backend/modulo_testes_sql_backup_e_restauracao/01_testes_integrados_violacoes_replay.sql
+   ```
+
+2. **Ciclo Automatizado de Backup Lógico e Restauração a Frio:**
+   A rotina extrai um dump lógico consistente (`mysqldump` com `--single-transaction --routines --triggers --events`), cria uma base vazia (`kaizen_restore_test`), restaura integralmente o dump e executa auditoria no catálogo (`information_schema`) via `02_validacao_restauracao.sql` para atestar a recriação exata de tabelas, views, rotinas, triggers e seeds.
+
+   - **No Linux / macOS (Bash):**
+     ```bash
+     chmod +x backend/modulo_testes_sql_backup_e_restauracao/executar_backup_e_restauracao.sh
+     ./backend/modulo_testes_sql_backup_e_restauracao/executar_backup_e_restauracao.sh
+     ```
+
+   - **No Windows (PowerShell):**
+     ```powershell
+     powershell -ExecutionPolicy Bypass -File backend/modulo_testes_sql_backup_e_restauracao/executar_backup_e_restauracao.ps1
+     ```
+
+---
+
+### Opção 2: Via MySQL Workbench (Interface Gráfica)
+
+1. **Executar a Bateria Integrada de Testes:**
+   - Conecte-se à instância MySQL e certifique-se de selecionar o schema principal (`USE kaizen;`).
+   - Abra o script via menu **File** > **Open SQL Script...** (`Ctrl + Shift + O`) selecionando `backend/modulo_testes_sql_backup_e_restauracao/01_testes_integrados_violacoes_replay.sql`.
+   - Clique no ícone do **Raio** para executar.
+   - Acompanhe no painel **Action Output** e na grade de resultados as asserções de validação e os blocos de teste de integridade.
+
+2. **Realizar Backup e Restauração Visual:**
+   - **Exportação (Backup):**
+     1. No menu lateral esquerdo (**Navigator**), acesse a aba **Administration** e clique em **Data Export**.
+     2. Selecione o schema `kaizen`.
+     3. Marque as opções **Dump Stored Procedures and Functions**, **Dump Events** e **Dump Triggers**.
+     4. Selecione **Export to Self-Contained File** e defina o destino do arquivo `.sql`.
+     5. Clique em **Start Export**.
+   - **Importação (Restauração em base vazia para teste de recuperação):**
+     1. Crie um schema vazio executando `CREATE SCHEMA kaizen_restore_test;`.
+     2. Em **Administration**, clique em **Data Import/Restore**.
+     3. Selecione **Import from Self-Contained File** e aponte para o backup exportado.
+     4. Em **Default Target Schema**, selecione `kaizen_restore_test`.
+     5. Clique em **Start Import**.
+   - **Validação pós-Restauração:**
+     1. Selecione o schema restaurado: `USE kaizen_restore_test;`.
+     2. Abra e execute o script `backend/modulo_testes_sql_backup_e_restauracao/02_validacao_restauracao.sql`.
+     3. Verifique se todas as verificações retornam `PASS` para a integridade de tabelas, visões, triggers e seeds.
