@@ -1,5 +1,5 @@
 -- =============================================================================
--- 01_triggers.sql
+-- 05_triggers.sql
 -- Kaizen BD — Módulo de Triggers (6 Regras / 7 Objetos) (BK-DB-07)
 -- SGBD: MySQL Server 8.0.46 / Dialeto MySQL 8.0 (InnoDB, utf8mb4_0900_ai_ci)
 -- =============================================================================

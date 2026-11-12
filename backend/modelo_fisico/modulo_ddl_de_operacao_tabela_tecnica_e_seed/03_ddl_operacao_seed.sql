@@ -1,5 +1,5 @@
 -- =============================================================================
--- V1__operacao_seed.sql
+-- 03_ddl_operacao_seed.sql
 -- Kaizen BD — DDL de Operação, Tabela Técnica e Seed (BK-DB-05)
 -- MySQL 8.0.46 | InnoDB | utf8mb4_0900_ai_ci
 -- Ordem de criação: TURMA → ACESSO → RESERVA_TURMA → AUDITORIA_LOG → SEED
