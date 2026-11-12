@@ -8,7 +8,7 @@
 
 [![MySQL](https://img.shields.io/badge/MySQL-8.0.46-00758F?logo=mysql&logoColor=white)](#ambiente-e-stack)
 [![InnoDB](https://img.shields.io/badge/Engine-InnoDB-orange)](#ambiente-e-stack)
-[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](#execução-via-docker-recomendado)
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](#início-rápido)
 [![Status](https://img.shields.io/badge/Status-Database%20Ready-brightgreen)](#suíte-de-testes)
 
 ---
