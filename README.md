@@ -186,13 +186,3 @@ O modelo físico é composto por 15 tabelas (13 de domínio e 2 técnicas):
 | | `AUDITORIA_LOG` | Trilha de auditoria para operações DML sensíveis |
 
 ---
-
-## Colaboradores
-
-| Colaborador | GitHub |
-|---|---|
-| Gabriele Santos Natividade | [@Gabriele-Natividade](https://github.com/Gabriele-Natividade) |
-| Larinete Santana Xavier | [@larinete](https://github.com/larinete) |
-| Leticia Farias Veras | [@letifarias17](https://github.com/letifarias17) |
-| Leticia Vitorino de Araújo Motta | [@leticiavitorinoam](https://github.com/leticiavitorinoam) |
-| Luciano de Souza Silva | [@lucianosouza07](https://github.com/lucianosouza07) |
