@@ -70,5 +70,4 @@ docker exec -i kaizen-mysql-test mysql -u root -proot kaizen < backend/modelo_fi
 3. **Multi-unit Isolation:** Every operational entity referencing tenant data must maintain relational integrity with `UNIDADE`.
 4. **Git & Commit Standards:**
    - Follow Conventional Commits: `tipo(escopo opcional): descrição` in lowercase, imperative mood, without emojis.
-   - Enforced by `kaizen/.git/hooks/commit-msg`.
 5. **Git Workflow:** Feature branches branch off and merge back into `develop` via pull requests.
